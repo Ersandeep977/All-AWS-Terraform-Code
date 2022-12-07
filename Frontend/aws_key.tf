@@ -7,13 +7,7 @@ resource "tls_private_key" "rsa" {
 
 # Create Key Pair
 resource "aws_key_pair" "deployer" {
-  key_name   = "TF-key"
+  key_name   = "terraform_key"
   public_key = tls_private_key.rsa.public_key_openssh
-}
-
-# Store key in local system
-resource "local_file" "TF_Key" {
-  content  = tls_private_key.rsa.private_key_pem
-  filename = "tfkey.pem"
 }
 

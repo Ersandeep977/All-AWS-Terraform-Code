@@ -2,7 +2,7 @@
 resource "aws_instance" "Main_server" {
   ami                         = data.aws_ami.AmazonAmiName.id
   instance_type               = "t2.micro"
-  key_name                    = "DevOpsKey"
+  key_name                    = "terraform_key"
   subnet_id                   = aws_subnet.public.id
   associate_public_ip_address = true
   availability_zone           = "us-east-2a"
@@ -13,19 +13,20 @@ resource "aws_instance" "Main_server" {
   tags = {
     "Name" = "Main-server"
   }
+  depends_on = [aws_key_pair.deployer]
 }
 
 # Second Server Creation
 resource "aws_instance" "os2" {
   ami                         = data.aws_ami.AmazonAmiName.id
   instance_type               = "t2.micro"
-  key_name                    = "DevOpsKey"
+  key_name                    = "terraform_key"
   subnet_id                   = aws_subnet.private.id
   associate_public_ip_address = false
-  
   tags = {
     "Name" = "MyNewOs2"
   }
+  depends_on = [aws_key_pair.deployer]
 }
 
 # AWS EBS Volume for Main server Create
